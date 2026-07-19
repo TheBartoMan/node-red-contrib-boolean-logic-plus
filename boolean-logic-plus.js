@@ -48,13 +48,13 @@ module.exports = function (RED) {
         }
 
         function showResult(result, trueTopics, falseTopics) {
-            const parts = [];
-            if (falseTopics.length) parts.push("false: " + falseTopics.join(", "));
-            if (trueTopics.length) parts.push("true: " + trueTopics.join(", "));
+            const trueStr = trueTopics.length ? "true: " + trueTopics.join(", ") : null;
+            const falseStr = falseTopics.length ? "false: " + falseTopics.join(", ") : null;
+            const ordered = result ? [trueStr, falseStr] : [falseStr, trueStr];
             node.status({
                 fill: result ? "green" : "red",
-                shape: result ? "dot" : "ring",
-                text: parts.join(". ")
+                shape: "dot",
+                text: ordered.filter(Boolean).join(". ")
             });
         }
 

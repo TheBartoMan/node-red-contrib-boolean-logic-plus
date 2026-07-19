@@ -14,8 +14,8 @@
         outputLabels: ["result", "true/false breakdown"],
         icon: "font-awesome/fa-random",
         label: function () {
-            if (this.name) return this.name;
-            return this.operation.toUpperCase() + " [" + this.numTopics + "]";
+            const base = this.operation.toUpperCase() + " [" + this.numTopics + "]";
+            return this.name ? base + " (" + this.name + ")" : base;
         },
         labelStyle: function () {
             return this.name ? "node_label_italic" : "";
@@ -72,6 +72,9 @@
     sent when the breakdown actually changes from the last time it was
     sent - not on every evaluation, and not merely because the boolean
     result flipped while the underlying topics stayed the same.</p>
+    <p>The node's label on the canvas shows the operation and topic count,
+    e.g. <code>OR [2]</code> - with your <b>Name</b> appended in brackets
+    if you've set one, e.g. <code>OR [2] (garden lights)</code>.</p>
     <h3>Invert</h3>
     <p>Flips the final result on output 1 only - e.g. tick it on an AND to
     get NAND, on OR to get NOR, on Exclusive Or to get XNOR - without
@@ -79,11 +82,12 @@
     since it's reporting actual topic states rather than the final
     (possibly inverted) result.</p>
     <h3>Status</h3>
-    <p>Shows the false and true topics together, e.g.
-    <code>false: A, B, C. true: D, E</code> - grouping omitted if empty.
-    The dot/ring color and fill reflect the actual output 1 result (after
-    <b>Invert</b>). While still waiting for enough topics: <code>1 of 3
-    topics received.</code> After a reset: <code>unknown</code>.</p>
+    <p>Shows a dot colored green (true) or red (false), with the matching
+    group listed first: <code>true: D, E. false: A, B, C</code> when the
+    result is true, or <code>false: A, B, C. true: D, E</code> when it's
+    false. Either group is omitted if empty. While still waiting for
+    enough topics: <code>1 of 3 topics received.</code> After a reset:
+    <code>unknown</code>.</p>
     <h3>Value conversion</h3>
     <p>Booleans are taken as-is. Numbers: <code>0</code> is false, anything
     else is true. Strings that parse as a decimal number follow the same

@@ -53,12 +53,18 @@ Only sent when the breakdown actually changes from the last time it was
 sent - not on every evaluation, and not merely because the boolean result
 on output 1 flipped while the underlying topics stayed the same.
 
+### Node label
+
+Shows the operation and topic count, e.g. `OR [2]` - with your **Name**
+appended in brackets if you've set one, e.g. `OR [2] (garden lights)`.
+
 ### Status
 
-Shows the false and true topics together, e.g. `false: A, B, C. true: D, E`
-- either group is omitted if empty. The dot/ring color reflects the
-actual output 1 result (after **Invert**). While still priming: `1 of 3
-topics received.`. After a reset: `unknown`.
+Shows a dot colored green (true) or red (false), with the matching group
+listed first: `true: D, E. false: A, B, C` when the result is true, or
+`false: A, B, C. true: D, E` when it's false. Either group is omitted if
+empty. While still priming: `1 of 3 topics received.`. After a reset:
+`unknown`.
 
 ## Value conversion
 
