@@ -1,6 +1,6 @@
 {
   "name": "node-red-contrib-boolean-logic-plus",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "AND/OR/XOR boolean logic across a fixed number of topics, with a second output reporting which topics currently hold true.",
   "keywords": [
     "node-red",
@@ -8,7 +8,8 @@
     "logic",
     "and",
     "or",
-    "xor"
+    "xor",
+    "utility"
   ],
   "license": "Apache-2.0",
   "repository": {
