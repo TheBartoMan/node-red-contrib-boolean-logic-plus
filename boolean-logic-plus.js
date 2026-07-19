@@ -43,8 +43,12 @@ module.exports = function (RED) {
             node.status({ fill: "grey", shape: "ring", text: "unknown" });
         }
 
-        function showWaiting(count) {
-            node.status({ fill: "yellow", shape: "dot", text: count + " of " + node.numTopics + " topics received." });
+        function showWaiting(count, receivedTopics) {
+            node.status({
+                fill: "yellow",
+                shape: "dot",
+                text: count + " of " + node.numTopics + " topics received: " + receivedTopics.join(", ")
+            });
         }
 
         function showResult(result, trueTopics, falseTopics) {
@@ -105,7 +109,7 @@ module.exports = function (RED) {
                 lastTrueKey = null;
                 showUnknown();
             } else {
-                showWaiting(keyCount);
+                showWaiting(keyCount, Object.keys(values).sort());
             }
 
             done();

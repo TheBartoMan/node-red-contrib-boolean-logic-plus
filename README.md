@@ -63,8 +63,9 @@ appended in brackets if you've set one, e.g. `OR [2] (garden lights)`.
 Shows a dot colored green (true) or red (false), with the matching group
 listed first: `true: D, E. false: A, B, C` when the result is true, or
 `false: A, B, C. true: D, E` when it's false. Either group is omitted if
-empty. While still priming: `1 of 3 topics received.`. After a reset:
-`unknown`.
+empty. While still priming: `3 of 4 topics received: A, B, C` - so you
+can see exactly which topic is missing, not just the count. After a
+reset: `unknown`.
 
 ## Value conversion
 
