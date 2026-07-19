@@ -14,7 +14,8 @@
         outputLabels: ["result", "true/false breakdown"],
         icon: "font-awesome/fa-random",
         label: function () {
-            return this.name || "boolean logic+";
+            if (this.name) return this.name;
+            return this.operation.toUpperCase() + " [" + this.numTopics + "]";
         },
         labelStyle: function () {
             return this.name ? "node_label_italic" : "";
