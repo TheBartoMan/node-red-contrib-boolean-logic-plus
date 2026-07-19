@@ -1,0 +1,94 @@
+<script type="text/javascript">
+    RED.nodes.registerType('boolean-logic-plus', {
+        category: 'function',
+        color: '#8B7FD1',
+        defaults: {
+            name: { value: "" },
+            operation: { value: "and" },
+            numTopics: { value: 2, validate: RED.validators.number() },
+            topic: { value: "result" },
+            invert: { value: false }
+        },
+        inputs: 1,
+        outputs: 2,
+        outputLabels: ["result", "true/false breakdown"],
+        icon: "font-awesome/fa-random",
+        label: function () {
+            return this.name || "boolean logic+";
+        },
+        labelStyle: function () {
+            return this.name ? "node_label_italic" : "";
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="boolean-logic-plus">
+    <div class="form-row">
+        <label for="node-input-operation"><i class="fa fa-cog"></i> Operation</label>
+        <select id="node-input-operation" style="width:150px">
+            <option value="and">And</option>
+            <option value="or">Or</option>
+            <option value="xor">Exclusive Or</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-numTopics"><i class="fa fa-list-ol"></i> Number of topics</label>
+        <input type="number" id="node-input-numTopics" style="width:70px" min="1" step="1">
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name" style="width:60%">
+    </div>
+    <div class="form-row">
+        <label for="node-input-topic"><i class="fa fa-envelope"></i> Topic</label>
+        <input type="text" id="node-input-topic" placeholder="result" style="width:60%">
+    </div>
+    <div class="form-row">
+        <label for="node-input-invert" style="width:auto; display:inline">
+            <input type="checkbox" id="node-input-invert" style="display:inline-block; width:15px; vertical-align:baseline;">
+            <span>Invert result (NAND/NOR/XNOR)</span>
+        </label>
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="boolean-logic-plus">
+    <p>Performs AND, OR, or Exclusive Or logic across a fixed number of
+    distinct topics, the same way as the original boolean-logic node, but
+    with a second output added.</p>
+    <p>Configure <b>Number of topics</b> to the number of distinct
+    <code>msg.topic</code> values you expect to feed in. The node waits
+    until it has seen a value for each of them at least once, then
+    re-evaluates and outputs on every subsequent message. If it ever sees
+    a distinct topic beyond the configured number, it resets silently
+    (no output) and waits for a fresh full set.</p>
+    <p><b>Output 1 (result)</b> - <code>msg.topic</code> set to the
+    configured <b>Topic</b>, <code>msg.payload</code> the boolean
+    result (after <b>Invert</b>, if enabled).</p>
+    <p><b>Output 2 (true/false breakdown)</b> - <code>msg.payload</code> an
+    object listing which configured topics currently hold true and which
+    hold false, e.g. <code>{ true: ["D", "E"], false: ["A", "B", "C"] }</code>.
+    This is always the raw topic states, regardless of <b>Invert</b>. Only
+    sent when the breakdown actually changes from the last time it was
+    sent - not on every evaluation, and not merely because the boolean
+    result flipped while the underlying topics stayed the same.</p>
+    <h3>Invert</h3>
+    <p>Flips the final result on output 1 only - e.g. tick it on an AND to
+    get NAND, on OR to get NOR, on Exclusive Or to get XNOR - without
+    needing a separate downstream Invert node. Output 2 is unaffected,
+    since it's reporting actual topic states rather than the final
+    (possibly inverted) result.</p>
+    <h3>Status</h3>
+    <p>Shows the false and true topics together, e.g.
+    <code>false: A, B, C. true: D, E</code> - grouping omitted if empty.
+    The dot/ring color and fill reflect the actual output 1 result (after
+    <b>Invert</b>). While still waiting for enough topics: <code>1 of 3
+    topics received.</code> After a reset: <code>unknown</code>.</p>
+    <h3>Value conversion</h3>
+    <p>Booleans are taken as-is. Numbers: <code>0</code> is false, anything
+    else is true. Strings that parse as a decimal number follow the same
+    rule; the string <code>"true"</code> (case-insensitive) is true;
+    anything else is false.</p>
+    <h3>Exclusive Or with more than 2 topics</h3>
+    <p>True only when <i>exactly one</i> topic is currently true - not
+    "an odd number are true". With 3+ topics all true, XOR is false.</p>
+</script>
